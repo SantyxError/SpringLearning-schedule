@@ -9,8 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Calendar;
 
-@Component
+@Component("horario")
 public class HorarioInterceptors implements HandlerInterceptor {
+
 	@Value("${config.horario.apertura}")
 	private Integer apertura;
 	@Value("${config.horario.cierre}")
@@ -24,10 +25,10 @@ public class HorarioInterceptors implements HandlerInterceptor {
 			StringBuilder mensaje = new StringBuilder("Bienvenido al horario de atención a clientes");
 			mensaje.append(", atendemos desde las ");
 			mensaje.append(apertura);
-			mensaje.append("hrs.");
-			mensaje.append("hasta las ");
+			mensaje.append(" hrs.");
+			mensaje.append(" hasta las ");
 			mensaje.append(cierre);
-			mensaje.append("hrs. ");
+			mensaje.append(" hrs. ");
 			mensaje.append("Gracias por su visita");
 			request.setAttribute("mensaje", mensaje.toString());
 			return true;
