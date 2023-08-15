@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,13 +34,15 @@ public class HorarioInterceptors implements HandlerInterceptor {
 			request.setAttribute("mensaje", mensaje.toString());
 			return true;
 		}
-		response.sendRedirect(request.getContextPath().concat("/"));
+		response.sendRedirect(request.getContextPath().concat("/cerrado"));
 		return false;
 	}
 
 	@Override public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		String mensaje = (String) request.getAttribute("mensaje");
 		assert modelAndView != null;
-		modelAndView.addObject("horario", mensaje);
+		if (modelAndView != null && handler instanceof HandlerMethod) {
+			modelAndView.addObject("horario", mensaje);
+		}
 	}
 }
