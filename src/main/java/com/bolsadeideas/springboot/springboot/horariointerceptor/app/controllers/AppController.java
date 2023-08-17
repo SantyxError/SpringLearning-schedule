@@ -1,12 +1,19 @@
 package com.bolsadeideas.springboot.springboot.horariointerceptor.app.controllers;
 
+import com.bolsadeideas.springboot.springboot.horariointerceptor.app.models.domain.Usuario;
+import com.bolsadeideas.springboot.springboot.horariointerceptor.app.services.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class AppController {
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Value("${config.horario.apertura}")
 	private Integer apertura;
@@ -30,5 +37,13 @@ public class AppController {
 		model.addAttribute("titulo", "Fuera del horario de atención");
 		model.addAttribute("mensaje", mensaje);
 		return "cerrado";
+	}
+
+	@GetMapping("/ver/{id}")
+	public String ver(@PathVariable Integer id, Model model) {
+		Usuario usuario = usuarioService.obtenerPorId(id);
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("titulo", "Detalle usuario: ".concat(usuario.getNombre()));
+		return "ver";
 	}
 }
